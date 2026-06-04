@@ -3,15 +3,15 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}_praktomat
     image: praktomat
 # Uncomment the next line for development.
-    ports: ["8000:443"]
+    #ports: ["8000:443"]
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - type: bind
         source: $HOME/praktomat/work-data/$COMPOSE_PROJECT_NAME
         target: /home/praktomat/work-data
-      # - type: bind
-      #   source: $HOME/devel/Praktomat
-      #   target: /home/praktomat/Praktomat
+      - type: bind
+        source: /mnt/c/Users/Lenovo/Documents/Uni_Offenburg/7.semester/Bachelor_Wehr/praktomat/praktomat
+        target: /home/praktomat/Praktomat
     depends_on:
       - postgresql
     networks:
@@ -34,7 +34,7 @@ services:
       - PRAKTOMAT_CHECKER_EXTERNAL_EXTRA_DIR_5
       - PRAKTOMAT_CHECKER_IMAGE
       - PRAKTOMAT_CHECKER_UID_MOD
-      - PRAKTOMAT_CHECKER_WRITABLE
+      - PRAKTOMAT_CHECKER_WRIT
       - PRAKTOMAT_CHECKER_ENABLE_NETWORK
       - PRAKTOMAT_DOMAIN
     init: true
