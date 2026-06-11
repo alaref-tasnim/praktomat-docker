@@ -76,7 +76,7 @@ USER praktomat
 WORKDIR /home/praktomat
 RUN git clone --recursive https://github.com/hso-praktomat/praktomat.git Praktomat \
   && cd Praktomat \
-  && git checkout e5b31b7699918c5815e3bb7faddaa37408e5426a
+  && git checkout 3d9d91a9f9fa4fbc2e40e826c45bc462022463a4
 RUN sudo chown praktomat:tester Praktomat/src/checker/scripts/java
 RUN sudo chown praktomat:tester Praktomat/src/checker/scripts/javac
 RUN sudo chmod u+x,g+x,o-x Praktomat/src/checker/scripts/java
@@ -100,6 +100,7 @@ RUN sudo chown -R praktomat:praktomat /opt/praktomat-addons
 # Copy config file
 COPY local.py praktomat_docker_settings/docker_settings.py
 ENV DJANGO_SETTINGS_MODULE=docker_settings
+ENV PYTHONPATH=/home/praktomat/praktomat_docker_settings
 
 # Setup required directories
 RUN mkdir debug-data work-data test-data
@@ -119,7 +120,7 @@ COPY CA17.pem /etc/ssl/certs/CA17.pem
 RUN printf "\nTLS_CACERT    /etc/ssl/certs/CA17.pem\n" | sudo tee -a /etc/ldap/ldap.conf
 
 # Initialize Praktomat
-RUN COMPOSE_PROJECT_NAME="" PRAKTOMAT_NAME="" PRAKTOMAT_ADMIN="" PRAKTOMAT_CHECKER_IMAGE="" PRAKTOMAT_CHECKER_UID_MOD="" PRAKTOMAT_CHECKER_WRITABLE="" PRAKTOMAT_DOMAIN="" PYTHONPATH=$HOME/praktomat_docker_settings python3 Praktomat/src/manage-local.py collectstatic --noinput --link
+RUN COMPOSE_PROJECT_NAME="" PRAKTOMAT_NAME="" PRAKTOMAT_ADMIN="" PRAKTOMAT_CHECKER_IMAGE="" PRAKTOMAT_CHECKER_UID_MOD="" PRAKTOMAT_CHECKER_WRITABLE="" PRAKTOMAT_DOMAIN="" python3 Praktomat/src/manage-local.py collectstatic --noinput --link
 
 # Configure Cron to automatically run all checkers
 COPY daily-cron.sh daily-cron.sh
